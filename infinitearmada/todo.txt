@@ -1,0 +1,22 @@
+===========
+Things To Do
+===========
+
+1. Create base entity class
+	a. Properties
+		I. Current position
+		II. Velocity
+		III. Rotation
+		IV. Health
+	b. Methods
+		I. Move
+		II. Shoot
+		III. Collide
+		IV. Spawn
+		V. Die
+
+2. Prototype move/fire system
+	a. Create "drone" enemy class that follows player
+	b. Create player class
+	c. Copy over dual stick code; add code which changes placement of sticks based on touches (left/right sides of screen)
+	d. Investigate camera function to make arena larger than screen

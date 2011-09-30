@@ -1,0 +1,36 @@
+===============
+Infinite Armada
+===============
+
+Overview
+--------
+
+
+Brainstorm
+----------
+* 2D, vector art style inspired by PixelJunk Shooter
+* Enemy types
+	* Drone - constantly moves towards player, speed increases over lifespan, doesn't shoot
+	* Hulk - moves randomly, constant speed, very high hitpoints
+	* Shooter - tries to avoid player, shoots homing projectiles
+	* Factory - tries to avoid player, spawns shooters
+	* Mine - static object, destroys player on contact; can be shot
+	* Tank - moves randomly, shoots reflective projectiles
+
+* Bullets need to have a trailing "smoke" effect
+* Experiment with 8-way shooting instead of total 360 degree
+* Powerups
+	* Shield - allows player to take an extra hit
+	* Rapid Fire - increases firing rate
+	* Double Shot - fires two shots at a time
+	* Speed Up 
+* In-app Purchase
+	* Chance for powerups to drop
+	* In-game credit doubler
+	* Different ship designs/colors
+	* Add sockets for stat bonuses?
+		* Speed
+		* # of guns?
+		* Rate of fire
+* Level transitions
+	* Board reset or dynamic, while the player is still moving around?
