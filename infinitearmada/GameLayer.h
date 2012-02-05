@@ -32,6 +32,9 @@
 	// Oh score, how worthless you are!
 	int score;
 	CCLabelTTF *scoreLabel;
+    
+    // Level counter
+    int level;
 
 	// Store the size of the viewport so we don't have to ask the director in each method
 	CGSize windowSize;
@@ -47,5 +50,6 @@
 - (void)updateScore:(int)points;				// Updates the player's score and the score display
 - (void)removeNodeFromParent:(CCNode *)node;	// Removes a CCNode from the layer
 - (void)reset;									// Resets the player & enemies
+- (void)nextLevel;                              // Re-spawns enemies and increments level counter
 
 @end

@@ -30,6 +30,7 @@
 	{
 		// Register touches on the layer
 		[self setIsTouchEnabled:YES];
+        [self setIsAccelerometerEnabled:YES];
 		
 		// Set this layer property so I don't have to query the director in every method
 		windowSize = [CCDirector sharedDirector].winSize;
@@ -79,7 +80,14 @@
 		enemies = [[NSMutableArray alloc] init];
 		
 		// Schedule an update method that spawns enemies
-		[self schedule:@selector(spawnDrone) interval:1.0];
+//		[self schedule:@selector(spawnDrone) interval:1.0];
+        
+        level = 1;
+        
+        for (int i = 0; i < level + 5; i++)
+        {
+            [self spawnDrone];
+        }
 		
 		// Schedule the regular update method
 		[self scheduleUpdate];
@@ -97,14 +105,14 @@
  */
 - (void)spawnDrone
 {
-	if ([enemies count] < 5)
+//	if ([enemies count] < 5)
 	{
 		// Create drone obj
-		Factory *d = [Factory create];
+		Drone *d = [Drone create];
 		
-		// Randomly position it off screen
-		int x = arc4random() % 2 == 1 ? 0 : windowSize.width;
-		int y = arc4random() % 2 == 1 ? 0 : windowSize.height;
+		// Randomly position it at the edges of the screen
+		int x = arc4random() % 2 == 1 ? 0 + d.contentSize.width : windowSize.width - d.contentSize.width;
+		int y = arc4random() % 2 == 1 ? 0 + d.contentSize.height : windowSize.height - d.contentSize.height;
 		
 		d.position = ccp(x, y);
 		
@@ -319,6 +327,11 @@
 	{
 		[self reset];
 	}
+    
+    if ([enemies count] == 0)
+    {
+        [self nextLevel];
+    }
 }
 
 /**
@@ -351,6 +364,21 @@
 	[enemies removeAllObjects];
 }
 
+- (void)nextLevel
+{
+    // Remove enemy/player bullets and move ship back to center
+    [self reset];
+    
+    // Increment level counter
+    level++;
+    
+    // Spawn some more enemies at random locations
+    for (int i = 0; i < level + 5; i++)
+    {
+        [self spawnDrone];
+    }
+}
+
 /**
  * Convenience method used to update the in-game score label
  */
@@ -360,6 +388,39 @@
 	[scoreLabel setString:[NSString stringWithFormat:@"%i", score]];
 }
 
+/**
+ * Reverse the shooting direction
+ */
+- (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    
+}
+
+/**
+ * Reset the shooting direction back forwards
+ */
+- (void)ccTouchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    
+}
+
+- (void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration
+{
+    // Accelerometer values are given from "portrait" orientation, so manually convert them to landscape
+
+    // X accel is negative when rotated left
+    float x = -acceleration.y;// - damping < 0 ? 0 : acceleration.y - damping;
+    float y = acceleration.x;// - damping < 0 ? 0 : acceleration.x - damping;
+    
+    // acceleration has .x and .y properties that range from (0,0) (neutral) to (1, 1) tilted upper left
+    ship.rotation = CC_RADIANS_TO_DEGREES(atan2(x, y)) - 90;
+    ship.velocity = ccp(x, y);
+    
+    ship.isShooting = YES;
+	NSLog(@"Accelerometer values: %f, %f, %f", acceleration.x, acceleration.y, acceleration.z);
+}
+
+/*
 - (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
 	// This method is passed an NSSet of touches called (of course) "touches"
@@ -487,6 +548,7 @@
 		}
 	}
 }
+*/
 
 /**
  * Creates simple particle effect
